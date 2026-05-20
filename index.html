@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#06010e">
-<!-- Ozora v7.19A17 HEADER SLOGAN READABILITY: updates slogan text and improves header slogan readability; no timeline changes -->
+<!-- Ozora v7.19A18 SYNC ONBOARDING CLARITY: clearer group sync onboarding + local sync cleanup -->
 <title>TribePath — OZORA 2026 — v7.19A17 Header Slogan Readability</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -1887,29 +1887,39 @@ nav.header-countdown-layout .header-slogan{
       <div style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:8px">התזכורות עובדות בלי אינטרנט כל עוד האפליקציה פתוחה. אם סגרת אותה לגמרי — אל תסמוך על זה כמו שעון מעורר.</div>
     </div>
     <div class="scard">
-      <div class="sctitle">📊 סנכרון Google Sheets</div>
+      <div class="sctitle">🫂 הצטרפות לחבורה</div>
       <div class="sync-bar">
         <div class="sdot" id="syncDot"></div>
-        <span id="syncMsg">לא מחובר לענן</span>
+        <span id="syncMsg">לא מחובר לחבורה</span>
+      </div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:10px">
+        <b style="color:var(--text)">הקישור פותח את האפליקציה. קישור הסנכרון מחבר אותך לחבורה.</b><br>
+        כדי לראות חברים ולשתף בחירות, הדבק כאן את קישור הסנכרון של החבורה.<br>
+        בלי קישור סנכרון — האפליקציה עובדת במצב אישי בלבד.
       </div>
       <div class="steps">
-        <b>הוראות (חד פעמי):</b><br>
+        <b>למנהל החבורה בלבד — הכנת קישור סנכרון:</b><br>
         1. צור Google Sheet חדש<br>
         2. Extensions → Apps Script<br>
-        3. העתק את הקוד למטה → Deploy<br>
-        4. הכנס את ה-URL שקיבלת
+        3. מחק את function myFunction הריק<br>
+        4. העתק את הקוד המלא → Deploy כ־Web App<br>
+        5. הדבק כאן את ה־URL שמסתיים ב־/exec
       </div><br>
       <div class="crow">
         <input class="cinp" id="gasSnip" value="// לחץ העתק לקוד המלא" readonly onclick="this.select()">
         <button class="cbtn" onclick="copyGAS()">העתק קוד</button>
       </div>
-      <input class="inp" id="sheetUrl" placeholder="https://script.google.com/..." />
-      <button class="btn btn-p btn-f" onclick="testSheet()">חבר ובדוק</button>
+      <input class="inp" id="sheetUrl" placeholder="הדבק כאן את קישור הסנכרון שקיבלת ממנהל החבורה" />
+      <button class="btn btn-p btn-f" onclick="connectGroupSync()">חבר אותי לחבורה</button>
+      <button class="btn btn-s btn-f" style="margin-top:8px" onclick="clearLocalSync()">🧹 נקה סנכרון מקומי</button>
+      <div style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:8px">
+        ניקוי סנכרון מקומי מוחק רק חברים, URL, קודי קבוצה/מנהל וסטטוס סנכרון. הליינאפ האישי והפרופיל נשארים.
+      </div>
     </div>
     <div class="scard">
       <div class="sctitle">📤 לינק לחבורה</div>
       <div style="font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.6">
-        זה רק מעתיק את הלינק לאפליקציה. את הליינאפ האישי מעתיקים מהטאב 🎒 מה אני עושה?.<br>מי שרוצה להופיע עם החבורה צריך גם Sheet URL וסנכרון כשיש אינטרנט.
+        זה רק מעתיק את הלינק לאפליקציה. את הליינאפ האישי מעתיקים מהטאב 🎒 מה אני עושה?.<br>מי שרוצה להופיע עם החבורה צריך גם קישור סנכרון חבורה וסנכרון כשיש אינטרנט.
       </div>
       <div class="crow">
         <input class="cinp" id="shareUrl" value="" readonly onclick="this.select()">
@@ -3715,7 +3725,7 @@ async function gasCall(payload){
 }
 
 async function doSync(){
-  if(!S.sheetUrl){ toast('⚙️ הגדר Sheet URL בהגדרות'); return; }
+  if(!S.sheetUrl){ toast('🫂 הדבק קישור סנכרון חבורה בהגדרות כדי להתחבר'); return; }
   setSyncState('syncing');
   try{
     const myEvs=S.events.filter(e=>e.status==='want').map(e=>({day:e.day,stage:e.stage,name:e.name,start:e.start,end:e.end}));
@@ -3732,17 +3742,54 @@ function setSyncState(s){
   const dot=document.getElementById('syncDot');
   const msg=document.getElementById('syncMsg');
   const btn=document.getElementById('syncBtn');
-  const m={idle:['','לא מחובר לענן','📡','סנכרון'],syncing:['syncing','מדבר עם הענן...','⌛','מסנכרן'],ok:['ok','הענן ענה ✓','📡','סנכרון'],err:['err','הענן ברחבה','📡','סנכרון']};
+  const m={idle:['','לא מחובר לחבורה','📡','סנכרון'],syncing:['syncing','מדבר עם הענן...','⌛','מסנכרן'],ok:['ok','מחובר לחבורה ✓','📡','סנכרון'],err:['err','הענן ברחבה','📡','סנכרון']};
   const[c,t,i,label]=m[s]||m.idle;
   if(dot) dot.className='sdot '+c;
   if(msg) msg.textContent=t;
   if(btn) btn.innerHTML='<span class="ico">'+i+'</span><span class="mini">'+label+'</span>';
 }
 
-async function testSheet(){
+async function connectGroupSync(){
   const url=document.getElementById('sheetUrl').value.trim();
-  if(!url){toast('הכנס URL');return;}
-  S.sheetUrl=url; save(); await doSync();
+  if(!url){ toast('הדבק את קישור הסנכרון שקיבלת ממנהל החבורה'); return; }
+  S.sheetUrl=url;
+  save();
+  setSyncState('syncing');
+  try{
+    const res=await gasCall({action:'ping'});
+    if(res && res.ok){
+      S.lastSyncError='';
+      save();
+      setSyncState('ok');
+      toast('✅ התחברת לחבורה. עכשיו סמן אומנים וסנכרן כדי שהחברים יראו אותך.');
+    }else{
+      throw new Error(res && res.error ? res.error : 'Ping failed');
+    }
+  }catch(e){
+    S.lastSyncError=String(e&&e.message?e.message:e);
+    save();
+    setSyncState('err');
+    toast('❌ לא הצלחתי להתחבר. בדוק שקישור הסנכרון נכון ושיש הרשאה ל־Anyone.');
+  }
+}
+function testSheet(){ return connectGroupSync(); }
+function clearLocalSync(){
+  S.friends=[];
+  S.sheetUrl='';
+  S.groupCode='';
+  S.adminCode='';
+  S.adminUsers=[];
+  S.lastSync='';
+  S.lastSyncError='';
+  save();
+  const url=document.getElementById('sheetUrl'); if(url) url.value='';
+  const gc=document.getElementById('groupCode'); if(gc) gc.value='';
+  const ac=document.getElementById('adminCode'); if(ac) ac.value='';
+  setSyncState('idle');
+  renderFriends();
+  renderMine();
+  renderAdminPanel();
+  toast('🧹 ניקיתי את הסנכרון המקומי. הליינאפ האישי נשאר.');
 }
 
 function copyGAS(){ navigator.clipboard.writeText(GAS_CODE); toast('✅ קוד הועתק — הדבק ב-Apps Script'); }
