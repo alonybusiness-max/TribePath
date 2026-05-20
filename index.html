@@ -2239,7 +2239,7 @@ let MAP_AREA = 'intro';
 let SUPPORT_TOPIC = 'breath';
 
 
-function save(){ try{ localStorage.setItem('tribepath_ozora2026_v1', JSON.stringify({
+function save(){ try{ localStorage.setItem('ozora26', JSON.stringify({
   events: S.events.map(e=>({id:e.id,status:e.status})),
   day: S.day, profile: S.profile, sheetUrl: S.sheetUrl, friends: S.friends,
   userId: S.userId, meetingPoint: S.meetingPoint, lastSync: S.lastSync, lastSyncError: S.lastSyncError,
@@ -2251,7 +2251,7 @@ function save(){ try{ localStorage.setItem('tribepath_ozora2026_v1', JSON.string
 
 function load(){
   try{
-    const d = localStorage.getItem('tribepath_ozora2026_v1');
+    const d = localStorage.getItem('ozora26');
     if(d){
       const p = JSON.parse(d);
       S.day = p.day || 3;
