@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#06010e">
-<!-- Ozora v7.19A8 HEADER ROW + NO FLOATING SHORTCUTS: compact one-line header and shortcuts stay inside page flow -->
-<title>Ozora 2026 — v7.19A8 Header Row + No Floating Shortcuts</title>
+<!-- Ozora v7.19A14 HEADER FESTIVAL NAME + SLOGAN: sync removed from header, Ozora 2026 in festival slot, slogan under countdown -->
+<title>TribePath — OZORA 2026 — v7.19A14 Header Festival Name + Slogan</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -1534,15 +1534,165 @@ nav.header-countdown-layout #syncBtn.top-friends-chip:active{
   nav.header-countdown-layout #syncBtn.top-friends-chip .mini{font-size:10px!important;}
 }
 
+
+/* ── v7.19A13 — Header TribePath Brand ──
+   Small header-only change:
+   right brand slot: TribePath
+   center countdown: OZORA'26 appears under the days/festival-day text.
+   No timeline, tabs, selection or sync logic changed. */
+nav.header-countdown-layout .logo{
+  font-family:'Bebas Neue',sans-serif!important;
+  font-size:22px!important;
+  letter-spacing:1.25px!important;
+  max-width:126px!important;
+  white-space:nowrap!important;
+}
+nav.header-countdown-layout #headerCountdownText .header-festival-under{
+  display:block!important;
+  margin-top:3px!important;
+  font-family:'Bebas Neue',sans-serif!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  letter-spacing:1.15px!important;
+  color:rgba(255,255,255,.74)!important;
+  line-height:1!important;
+  text-shadow:0 0 10px rgba(180,79,255,.22)!important;
+}
+nav.header-countdown-layout #headerCountdownBtn.header-countdown-chip{
+  height:60px!important;
+}
+nav.header-countdown-layout #headerCountdownText .count-number{
+  font-size:31px!important;
+}
+nav.header-countdown-layout #headerCountdownText .count-label{
+  margin-top:2px!important;
+}
+@media(max-width:380px){
+  nav.header-countdown-layout .logo{
+    font-size:18px!important;
+    letter-spacing:1px!important;
+    max-width:88px!important;
+  }
+  nav.header-countdown-layout #headerCountdownBtn.header-countdown-chip{
+    height:54px!important;
+  }
+  nav.header-countdown-layout #headerCountdownText .count-number{
+    font-size:27px!important;
+  }
+  nav.header-countdown-layout #headerCountdownText .header-festival-under{
+    font-size:10px!important;
+    letter-spacing:.85px!important;
+    margin-top:2px!important;
+  }
+}
+
+
+/* ── v7.19A14 — Header Festival Name + Slogan ──
+   Header-only correction:
+   - removes the sync button from the header location.
+   - puts Ozora 2026 in the left festival slot.
+   - puts the slogan under the countdown.
+   No timeline, tabs, artist selection, search, dates or sync logic changed. */
+nav.header-countdown-layout{
+  grid-template-columns:minmax(76px,1fr) minmax(170px,auto) minmax(96px,1fr)!important;
+  grid-template-rows:58px 34px!important;
+  height:104px!important;
+  min-height:104px!important;
+  max-height:104px!important;
+}
+nav.header-countdown-layout .logo{
+  grid-column:3!important;
+  grid-row:2!important;
+  justify-self:end!important;
+  align-self:end!important;
+  font-size:20px!important;
+  letter-spacing:1.8px!important;
+  max-width:120px!important;
+}
+nav.header-countdown-layout #headerCountdownBtn{
+  grid-column:2!important;
+  grid-row:1!important;
+  justify-self:center!important;
+  align-self:start!important;
+}
+nav.header-countdown-layout .header-slogan{
+  grid-column:2!important;
+  grid-row:2!important;
+  justify-self:center!important;
+  align-self:end!important;
+  max-width:220px!important;
+  padding:0 4px 2px!important;
+  font-family:'Rubik',sans-serif!important;
+  font-size:10.5px!important;
+  font-weight:800!important;
+  letter-spacing:.18px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  direction:ltr!important;
+  color:rgba(255,216,90,.92)!important;
+  text-shadow:0 0 10px rgba(255,216,90,.20),0 0 8px rgba(180,79,255,.16)!important;
+  white-space:normal!important;
+  pointer-events:none!important;
+}
+nav.header-countdown-layout .header-festival-name{
+  grid-column:1!important;
+  grid-row:2!important;
+  justify-self:start!important;
+  align-self:end!important;
+  font-family:'Bebas Neue',sans-serif!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:1.15px!important;
+  line-height:1!important;
+  direction:ltr!important;
+  white-space:nowrap!important;
+  background:linear-gradient(135deg,var(--orange),var(--purple),var(--teal))!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  color:var(--text)!important;
+  filter:drop-shadow(0 0 9px rgba(0,229,176,.16))!important;
+}
+nav.header-countdown-layout #headerCountdownText .header-festival-under{
+  display:none!important;
+}
+@media(max-width:380px){
+  nav.header-countdown-layout{
+    grid-template-columns:minmax(64px,1fr) minmax(146px,auto) minmax(80px,1fr)!important;
+    grid-template-rows:55px 32px!important;
+    height:98px!important;
+    min-height:98px!important;
+    max-height:98px!important;
+    padding:7px 8px 8px!important;
+    gap:0 5px!important;
+  }
+  nav.header-countdown-layout .logo{
+    font-size:17px!important;
+    letter-spacing:1.1px!important;
+    max-width:86px!important;
+  }
+  nav.header-countdown-layout .header-festival-name{
+    font-size:17px!important;
+    letter-spacing:.9px!important;
+  }
+  nav.header-countdown-layout .header-slogan{
+    max-width:162px!important;
+    font-size:9px!important;
+    line-height:1.08!important;
+    padding-bottom:1px!important;
+  }
+}
+
 </style>
 </head>
 <body class="tab-timeline">
 
 
 <nav class="main-topbar header-countdown-layout">
-  <div class="logo">OZORA'26</div>
+  <div class="logo">TribePath</div>
   <button type="button" class="top-countdown-chip header-countdown-chip" id="headerCountdownBtn" onclick="jumpToFestivalClock()" title="זמן פסטיבל"><span class="ico" id="headerCountdownIcon">⏳</span><span class="mini" id="headerCountdownText"><span class="count-number">--</span><span class="count-label">ימים</span></span></button>
-  <button type="button" class="top-countdown-chip top-friends-chip" id="syncBtn" onclick="doSync(event)" title="סנכרן עם הענן: שלח את הבחירות שלי והבא את החבורה"><span class="ico">📡</span><span class="mini">סנכרון</span></button>
+  <div class="header-slogan">Find your path through sound &amp; tribe</div>
+  <div class="header-festival-name">Ozora 2026</div>
 </nav>
 
 <div class="tabs">
